@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  hornetq.autoconfigure.HornetQAutoConfiguration
+  cn.com.pism.gfd.config.GoFastDsfConfiguration
