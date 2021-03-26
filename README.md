@@ -1,0 +1,1 @@
+"# gofastdfs-autoconfig" 
