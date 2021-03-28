@@ -8,4 +8,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties(prefix = "gofast")
 public class GoFastDfsProperties {
+    /**
+     * ip
+     */
+    private String ip;
+
+    /**
+     * 端口
+     */
+    private String port;
 }
