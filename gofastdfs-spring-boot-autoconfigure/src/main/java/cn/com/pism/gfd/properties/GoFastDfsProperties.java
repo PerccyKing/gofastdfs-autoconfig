@@ -1,5 +1,6 @@
 package cn.com.pism.gfd.properties;
 
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -7,6 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @date 2021/3/26 20:05
  */
 @ConfigurationProperties(prefix = "gofast")
+@Data
 public class GoFastDfsProperties {
     /**
      * ip
