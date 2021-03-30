@@ -18,4 +18,6 @@ public class GoFastDfsUtil {
     public String getBaseUrl() {
         return properties.getIp() + properties.getPort();
     }
+
+
 }
