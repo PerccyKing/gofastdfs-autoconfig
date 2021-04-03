@@ -31,6 +31,10 @@ public class GoFastDfsUtil {
 
     private GoFastDfsProperties properties;
 
+    public GoFastDfsUtil(GoFastDfsProperties properties) {
+        this.properties = properties;
+    }
+
     /**
      * <p>
      * 获取基础的请求路径
