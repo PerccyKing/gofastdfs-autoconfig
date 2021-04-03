@@ -7,12 +7,70 @@ import lombok.Data;
 import java.util.List;
 
 /**
+ * <pre>
+ * {
+ *   "addr": "",
+ *   "peers": null,
+ *   "enable_https": false,
+ *   "group": "",
+ *   "rename_file": false,
+ *   "show_dir": false,
+ *   "extensions": null,
+ *   "refresh_interval": 0,
+ *   "enable_web_upload": false,
+ *   "download_domain": "",
+ *   "enable_custom_path": false,
+ *   "scenes": null,
+ *   "alarm_receivers": null,
+ *   "default_scene": "app",
+ *   "mail": {
+ *     "user": "",
+ *     "password": "",
+ *     "host": ""
+ *   },
+ *   "alarm_url": "",
+ *   "download_use_token": false,
+ *   "download_token_expire": 0,
+ *   "queue_size": 0,
+ *   "auto_repair": false,
+ *   "host": "",
+ *   "file_sum_arithmetic": "",
+ *   "peer_id": "",
+ *   "support_group_manage": false,
+ *   "admin_ips": null,
+ *   "enable_merge_small_file": false,
+ *   "enable_migrate": false,
+ *   "enable_distinct_file": false,
+ *   "read_only": false,
+ *   "enable_cross_origin": false,
+ *   "enable_google_auth": false,
+ *   "auth_url": "",
+ *   "enable_download_auth": false,
+ *   "default_download": false,
+ *   "enable_tus": false,
+ *   "sync_timeout": 0,
+ *   "enable_fsnotify": false,
+ *   "enable_disk_cache": false,
+ *   "connect_timeout": false,
+ *   "read_timeout": 0,
+ *   "write_timeout": 0,
+ *   "idle_timeout": 0,
+ *   "read_header_timeout": 0,
+ *   "sync_worker": 0,
+ *   "upload_worker": 0,
+ *   "upload_queue_size": 0,
+ *   "retry_count": 0,
+ *   "sync_delay": 0,
+ *   "watch_chan_size": 0
+ * }
+ * </pre>
  * @author PerccyKing
  * @version 0.0.1
  * @date 2021/03/28 下午 07:41
  * @since 0.0.1
  */
 @Data
+@Builder
 public class GoFastDfsConfig {
     /**
      * 端口

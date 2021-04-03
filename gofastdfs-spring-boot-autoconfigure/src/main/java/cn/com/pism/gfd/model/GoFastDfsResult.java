@@ -9,7 +9,7 @@ import lombok.Data;
  * @since 0.0.1
  */
 @Data
-public class GoFastDfsResult {
+public class GoFastDfsResult<T> {
     /**
      * 状态
      */
@@ -21,5 +21,5 @@ public class GoFastDfsResult {
     /**
      * 数据
      */
-    private Object data;
+    private T data;
 }

@@ -19,4 +19,9 @@ public class GoFastDfsProperties {
      * 端口
      */
     private String port;
+
+    /**
+     * 分组，当填写分组时，表示支持集群管理
+     */
+    private String group;
 }
