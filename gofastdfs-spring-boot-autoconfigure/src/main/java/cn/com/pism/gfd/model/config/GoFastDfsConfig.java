@@ -1,8 +1,10 @@
 package cn.com.pism.gfd.model.config;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -71,6 +73,8 @@ import java.util.List;
  */
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class GoFastDfsConfig {
     /**
      * 端口
@@ -82,8 +86,7 @@ public class GoFastDfsConfig {
      * 请在conf目录中增加证书文件 server.crt 私钥 文件 server.key",
      */
     @JSONField(name = "enable_https")
-    @Builder.Default
-    private Boolean enableHttps = Boolean.FALSE;
+    private Boolean enableHttps;
 
     /**
      * "PeerID":
@@ -126,8 +129,7 @@ public class GoFastDfsConfig {
      * action为动作名，如status,delete,sync等",
      */
     @JSONField(name = "support_group_manage")
-    @Builder.Default
-    private Boolean supportGroupManage = Boolean.TRUE;
+    private Boolean supportGroupManage;
 
     /**
      * "是否合并小文件":
@@ -135,8 +137,7 @@ public class GoFastDfsConfig {
      * 合并可以解决inode不够用的情况（当前对于小于1M文件）进行合并",
      */
     @JSONField(name = "enable_merge_small_file")
-    @Builder.Default
-    private Boolean enableMergeSmallFile = Boolean.FALSE;
+    private Boolean enableMergeSmallFile;
 
     /**
      * "允许后缀名":
@@ -156,22 +157,19 @@ public class GoFastDfsConfig {
      * "是否自动重命名": "默认不自动重命名,使用原文件名"
      */
     @JSONField(name = "rename_file")
-    @Builder.Default
-    private Boolean renameFile = Boolean.FALSE;
+    private Boolean renameFile;
 
     /**
      * "是否支持web上传,方便调试": "默认支持web上传",
      */
     @JSONField(name = "enable_web_upload")
-    @Builder.Default
-    private Boolean enableWebUpload = Boolean.TRUE;
+    private Boolean enableWebUpload;
 
     /**
      * "是否支持非日期路径": "默认支持非日期路径,也即支持自定义路径,需要上传文件时指定path",
      */
     @JSONField(name = "enable_custom_path")
-    @Builder.Default
-    private Boolean enableCustomPath = Boolean.TRUE;
+    private Boolean enableCustomPath;
 
     /**
      * "下载域名": "用于外网下载文件的域名,不包含http://",
@@ -192,17 +190,22 @@ public class GoFastDfsConfig {
      * "默认场景": "默认default",
      */
     @JSONField(name = "default_scene")
-    private Integer defaultScene;
+    private String defaultScene;
 
     /**
      * "是否显示目录": "默认显示,方便调试用,上线时请关闭",
      */
     @JSONField(name = "show_dir")
-    @Builder.Default
-    private Boolean showDir = Boolean.TRUE;
+    private Boolean showDir;
 
     /**
-     * 邮件配置
+     * 	"邮件配置": "",
+     * 	"mail": {
+     * 		"user": "abc@163.com",
+     * 		"password": "abc",
+     * 		"host": "smtp.163.com:25"
+     *        },
+     * 	,
      */
     private Mail mail;
 
@@ -222,8 +225,7 @@ public class GoFastDfsConfig {
      * "下载是否需带token": "真假"
      */
     @JSONField(name = "download_use_token")
-    @Builder.Default
-    private Boolean downloadUseToken = Boolean.FALSE;
+    private Boolean downloadUseToken;
 
     /**
      * "下载token过期时间": "单位秒"
@@ -235,8 +237,7 @@ public class GoFastDfsConfig {
      * "是否自动修复": "在超过1亿文件时出现性能问题，取消此选项，请手动按天同步，请查看FAQ"
      */
     @JSONField(name = "auto_repair")
-    @Builder.Default
-    private Boolean autoRepair = Boolean.TRUE;
+    private Boolean autoRepair;
 
     /**
      * "文件去重算法md5可能存在冲突，默认md5": "sha1|md5"
@@ -254,20 +255,19 @@ public class GoFastDfsConfig {
      * "是否启用迁移": "默认不启用"
      */
     @JSONField(name = "enable_migrate")
-    @Builder.Default
-    private Boolean enableMigrate = Boolean.TRUE;
+    private Boolean enableMigrate;
 
     /**
      * "是否开启跨站访问": "默认开启"
      */
     @JSONField(name = "enable_cross_origin")
-    private Boolean enableCrossOrigin =Boolean.TRUE;
+    private Boolean enableCrossOrigin;
 
     /**
      * "是否开启Google认证，实现安全的上传、下载": "默认不开启"
      */
     @JSONField(name = "enable_google_auth")
-    private Boolean enableGoogleAuth = Boolean.FALSE;
+    private Boolean enableGoogleAuth;
 
     /**
      * "认证url": "当url不为空时生效,
@@ -282,26 +282,25 @@ public class GoFastDfsConfig {
      * "下载是否认证": "默认不认证(注意此选项是在auth_url不为空的情况下生效)"
      */
     @JSONField(name = "enable_download_auth")
-    private Boolean enableDownloadAuth = Boolean.FALSE;
+    private Boolean enableDownloadAuth;
 
     /**
      * "默认是否下载": "默认下载"
      */
     @JSONField(name = "default_download")
-    private Boolean defaultDownload = Boolean.TRUE;
+    private Boolean defaultDownload;
 
     /**
      * "本机是否只读": "默认可读可写"
      */
     @JSONField(name = "read_only")
-    @Builder.Default
-    private Boolean readOnly = Boolean.FALSE;
+    private Boolean readOnly;
 
     /**
      * "是否开启断点续传": "默认开启"
      */
     @JSONField(name = "enable_tus")
-    private Boolean enableTus = Boolean.TRUE;
+    private Boolean enableTus;
 
     /**
      * "同步单一文件超时时间（单位秒）": "默认为0,程序自动计算，在特殊情况下，自已设定",
@@ -309,14 +308,5 @@ public class GoFastDfsConfig {
     @JSONField(name = "sync_timeout")
     private Integer syncTimeout;
 
-    /**
-     * 	"邮件配置": "",
-     * 	"mail": {
-     * 		"user": "abc@163.com",
-     * 		"password": "abc",
-     * 		"host": "smtp.163.com:25"
-     *        },
-     * 	,
-     */
 
 }

@@ -1,7 +1,6 @@
 package cn.com.pism.gfd.exception;
 
-import com.sun.org.slf4j.internal.Logger;
-import com.sun.org.slf4j.internal.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 
 /**
@@ -10,9 +9,8 @@ import com.sun.org.slf4j.internal.LoggerFactory;
  * @date 2021/04/03 下午 09:56
  * @since 0.0.1
  */
+@Slf4j
 public class GoFastDfsException extends RuntimeException {
-
-    Logger log = LoggerFactory.getLogger(GoFastDfsException.class);
 
     public GoFastDfsException() {
         log.error("An error occurred");

@@ -2,7 +2,6 @@ package cn.com.pism.gfd.config;
 
 import cn.com.pism.gfd.GoFastDfsUtil;
 import cn.com.pism.gfd.properties.GoFastDfsProperties;
-import cn.hutool.core.util.ZipUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

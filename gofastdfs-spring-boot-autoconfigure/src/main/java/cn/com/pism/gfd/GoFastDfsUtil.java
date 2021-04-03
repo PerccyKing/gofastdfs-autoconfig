@@ -6,14 +6,18 @@ import cn.com.pism.gfd.model.GoFastDfsResult;
 import cn.com.pism.gfd.model.config.GoFastDfsConfig;
 import cn.com.pism.gfd.model.params.Reload;
 import cn.com.pism.gfd.properties.GoFastDfsProperties;
+import cn.com.pism.gfd.util.ObjectToBeanUtil;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
-import com.sun.org.slf4j.internal.Logger;
-import com.sun.org.slf4j.internal.LoggerFactory;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static cn.com.pism.gfd.constants.BaseGoFastDfsConstants.*;
 
@@ -25,15 +29,10 @@ import static cn.com.pism.gfd.constants.BaseGoFastDfsConstants.*;
  */
 @AllArgsConstructor
 @NoArgsConstructor
+@Slf4j
 public class GoFastDfsUtil {
 
-    Logger log = LoggerFactory.getLogger(GoFastDfsUtil.class);
-
     private GoFastDfsProperties properties;
-
-    public GoFastDfsUtil(GoFastDfsProperties properties) {
-        this.properties = properties;
-    }
 
     /**
      * <p>
@@ -93,16 +92,34 @@ public class GoFastDfsUtil {
      * @date 2021/04/03 下午 10:05
      */
     public <T> T post(String url, Object params, Class<T> clazz) {
-        String res = HttpUtil.post(getBaseUrl() + url, JSON.toJSONString(params));
-        GoFastDfsResult<T> result = JSON.parseObject(res, new TypeReference<GoFastDfsResult<T>>() {
+        Map<String, Object> map = new HashMap<>(0);
+        JSONObject jsonObject = ObjectToBeanUtil.parse(params, JSONObject.class);
+        jsonObject.forEach(map::put);
+        String res = HttpUtil.post(getBaseUrl() + url, map);
+        //判断返回格式是否为json
+        if (!isJson(res)) {
+            throw new GoFastDfsException(res);
+        }
+        GoFastDfsResult<Object> result = JSON.parseObject(res, new TypeReference<GoFastDfsResult<Object>>() {
         });
         String status = result.getStatus();
         if (OK.equals(status)) {
-            return result.getData();
+            return ObjectToBeanUtil.parse(result.getData(), clazz);
         } else {
             log.error("error result:{}", result.getData());
             log.error("error message:{}", result.getMessage());
             throw new GoFastDfsException("request was aborted");
+        }
+    }
+
+
+    public Boolean isJson(String s) {
+        try {
+            Object parse = JSON.parse(s);
+            return Boolean.TRUE;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return Boolean.FALSE;
         }
     }
 
