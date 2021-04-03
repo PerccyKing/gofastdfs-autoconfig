@@ -64,15 +64,20 @@ public class GoFastDfsUtil {
      */
     public GoFastDfsConfig reload(ActionEnum action, GoFastDfsConfig config) {
         Reload reload = new Reload();
+        GoFastDfsConfig getConfig = reload(ActionEnum.GET, null);
         switch (action) {
             case GET:
                 reload.setAction(ActionEnum.GET);
-                break;
+                return post(RELOAD_URL, reload, GoFastDfsConfig.class);
             case SET:
+                //获取到config。基于config设置参数
                 reload.setAction(ActionEnum.SET).setCfg(config);
-                break;
+                post(RELOAD_URL, reload, GoFastDfsConfig.class);
+                return getConfig;
             case RELOAD:
                 reload.setAction(ActionEnum.RELOAD);
+                post(RELOAD_URL, reload, GoFastDfsConfig.class);
+                return getConfig;
             default:
                 break;
         }

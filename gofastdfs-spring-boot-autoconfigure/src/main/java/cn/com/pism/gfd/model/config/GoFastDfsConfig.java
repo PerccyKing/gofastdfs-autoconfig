@@ -66,6 +66,7 @@ import java.util.List;
  *   "watch_chan_size": 0
  * }
  * </pre>
+ *
  * @author PerccyKing
  * @version 0.0.1
  * @date 2021/03/28 下午 07:41
@@ -151,7 +152,7 @@ public class GoFastDfsConfig {
      * "重试同步失败文件的时间": "单位秒",
      */
     @JSONField(name = "refresh_interval")
-    private Integer refreshInterval;
+    private Long refreshInterval;
 
     /**
      * "是否自动重命名": "默认不自动重命名,使用原文件名"
@@ -175,7 +176,7 @@ public class GoFastDfsConfig {
      * "下载域名": "用于外网下载文件的域名,不包含http://",
      */
     @JSONField(name = "download_domain")
-    private Integer downloadDomain;
+    private Long downloadDomain;
 
     /**
      * "场景列表":
@@ -199,13 +200,13 @@ public class GoFastDfsConfig {
     private Boolean showDir;
 
     /**
-     * 	"邮件配置": "",
-     * 	"mail": {
-     * 		"user": "abc@163.com",
-     * 		"password": "abc",
-     * 		"host": "smtp.163.com:25"
-     *        },
-     * 	,
+     * "邮件配置": "",
+     * "mail": {
+     * "user": "abc@163.com",
+     * "password": "abc",
+     * "host": "smtp.163.com:25"
+     * },
+     * ,
      */
     private Mail mail;
 
@@ -231,7 +232,7 @@ public class GoFastDfsConfig {
      * "下载token过期时间": "单位秒"
      */
     @JSONField(name = "download_token_expire")
-    private Integer downloadTokenExpire;
+    private Long downloadTokenExpire;
 
     /**
      * "是否自动修复": "在超过1亿文件时出现性能问题，取消此选项，请手动按天同步，请查看FAQ"
@@ -306,7 +307,48 @@ public class GoFastDfsConfig {
      * "同步单一文件超时时间（单位秒）": "默认为0,程序自动计算，在特殊情况下，自已设定",
      */
     @JSONField(name = "sync_timeout")
-    private Integer syncTimeout;
+    private Long syncTimeout;
 
 
+    @JSONField(name = "queue_size")
+    private Long queueSize;
+
+    @JSONField(name = "enable_fsnotify")
+    private Boolean enableFsnotify;
+
+    @JSONField(name = "enable_disk_cache")
+    private Boolean enableDiskCache;
+
+    @JSONField(name = "connect_timeout")
+    private Boolean connectTimeout;
+
+    @JSONField(name = "read_timeout")
+    private Long readTimeout;
+
+    @JSONField(name = "write_timeout")
+    private Long writeTimeout;
+
+    @JSONField(name = "idle_timeout")
+    private Long idleTimeout;
+
+    @JSONField(name = "read_header_timeout")
+    private Long readHeaderTimeout;
+
+    @JSONField(name = "sync_worker")
+    private Long syncWorker;
+
+    @JSONField(name = "upload_worker")
+    private Long uploadWorker;
+
+    @JSONField(name = "upload_queue_size")
+    private Long uploadQueueSize;
+
+    @JSONField(name = "retry_count")
+    private Long retryCount;
+
+    @JSONField(name = "sync_delay")
+    private Long syncDelay;
+
+    @JSONField(name = "watch_chan_size")
+    private Long watchChanSize;
 }
