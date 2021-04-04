@@ -3,6 +3,7 @@ package cn.com.pism.gfd;
 import cn.com.pism.gfd.enums.ActionEnum;
 import cn.com.pism.gfd.exception.GoFastDfsException;
 import cn.com.pism.gfd.model.GoFastDfsResult;
+import cn.com.pism.gfd.model.Stat;
 import cn.com.pism.gfd.model.config.GoFastDfsConfig;
 import cn.com.pism.gfd.model.params.Reload;
 import cn.com.pism.gfd.properties.GoFastDfsProperties;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static cn.com.pism.gfd.constants.BaseGoFastDfsConstants.*;
@@ -88,6 +90,20 @@ public class GoFastDfsUtil {
         return getConfig;
     }
 
+    /**
+     * <p>
+     * 文件统计信息
+     * </p>
+     *
+     * @return {@link List<Stat>} 统计信息列表
+     * @author PerccyKing
+     * @date 2021/04/04 下午 04:33
+     */
+    public List<Stat> stat() {
+        return postToArr(STAT_URL, null, Stat.class);
+    }
+
+
     @FunctionalInterface
     public interface ReloadAction {
         /**
@@ -115,14 +131,7 @@ public class GoFastDfsUtil {
      * @date 2021/04/03 下午 10:05
      */
     public <T> T post(String url, Object params, Class<T> clazz) {
-        Map<String, Object> map = new HashMap<>(0);
-        JSONObject jsonObject = ObjectToBeanUtil.parse(params, JSONObject.class);
-        jsonObject.forEach(map::put);
-        String res = HttpUtil.post(getBaseUrl() + url, map);
-        //判断返回格式是否为json
-        if (!isJson(res)) {
-            throw new GoFastDfsException(res);
-        }
+        String res = getPostResult(url, params);
         GoFastDfsResult<Object> result = JSON.parseObject(res, new TypeReference<GoFastDfsResult<Object>>() {
         });
         String status = result.getStatus();
@@ -133,6 +142,58 @@ public class GoFastDfsUtil {
             log.error("error message:{}", result.getMessage());
             throw new GoFastDfsException("request was aborted");
         }
+    }
+
+
+    /**
+     * <p>
+     * 发送post请求
+     * </p>
+     *
+     * @param url    : 请求路径
+     * @param params : 参数
+     * @param clazz  : clazz
+     * @return {@link List<T>} 获取到的数据
+     * @author PerccyKing
+     * @date 2021/04/03 下午 10:05
+     */
+    public <T> List<T> postToArr(String url, Object params, Class<T> clazz) {
+        String res = getPostResult(url, params);
+        GoFastDfsResult<Object> result = JSON.parseObject(res, new TypeReference<GoFastDfsResult<Object>>() {
+        });
+        String status = result.getStatus();
+        if (OK.equals(status)) {
+            return ObjectToBeanUtil.parseToList(result.getData(), clazz);
+        } else {
+            log.error("error result:{}", result.getData());
+            log.error("error message:{}", result.getMessage());
+            throw new GoFastDfsException("request was aborted");
+        }
+    }
+
+    /**
+     * <p>
+     * 获取接口请求响应数据
+     * </p>
+     *
+     * @param url    : 请求路径
+     * @param params : 参数
+     * @return {@link String}
+     * @author PerccyKing
+     * @date 2021/04/04 下午 04:31
+     */
+    private String getPostResult(String url, Object params) {
+        Map<String, Object> map = new HashMap<>(0);
+        if (params != null) {
+            JSONObject jsonObject = ObjectToBeanUtil.parse(params, JSONObject.class);
+            jsonObject.forEach(map::put);
+        }
+        String res = HttpUtil.post(getBaseUrl() + url, map);
+        //判断返回格式是否为json
+        if (!isJson(res)) {
+            throw new GoFastDfsException(res);
+        }
+        return res;
     }
 
 

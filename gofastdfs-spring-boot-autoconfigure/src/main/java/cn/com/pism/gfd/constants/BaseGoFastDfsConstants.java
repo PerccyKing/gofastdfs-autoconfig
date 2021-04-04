@@ -16,6 +16,11 @@ public abstract class BaseGoFastDfsConstants {
      */
     public static final String RELOAD_URL = "reload";
 
+    /**
+     * 文件统计信息
+     */
+    public static final String STAT_URL = "stat";
+
     public static final String SLASH = "/";
 
     public static final String HTTP = "http://";
