@@ -1,4 +1,4 @@
-package cn.com.pism.gfd.model;
+package cn.com.pism.gfd.model.result;
 
 import lombok.Data;
 
@@ -11,7 +11,7 @@ import lombok.Data;
  * @since 0.0.1
  */
 @Data
-public class Stat {
+public class StatResult {
     private String date;
     private Long fileCount;
     private Long totalSize;

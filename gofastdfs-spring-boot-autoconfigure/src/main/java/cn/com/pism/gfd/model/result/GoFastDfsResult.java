@@ -1,4 +1,4 @@
-package cn.com.pism.gfd.model;
+package cn.com.pism.gfd.model.result;
 
 import lombok.Data;
 

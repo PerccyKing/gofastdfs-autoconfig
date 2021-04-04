@@ -21,6 +21,11 @@ public abstract class BaseGoFastDfsConstants {
      */
     public static final String STAT_URL = "stat";
 
+    /**
+     * 文件上传
+     */
+    public static final String UPLOAD_URL = "upload";
+
     public static final String SLASH = "/";
 
     public static final String HTTP = "http://";

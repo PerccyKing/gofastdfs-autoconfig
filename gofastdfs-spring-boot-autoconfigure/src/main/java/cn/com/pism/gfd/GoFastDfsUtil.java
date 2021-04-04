@@ -1,11 +1,14 @@
 package cn.com.pism.gfd;
 
 import cn.com.pism.gfd.enums.ActionEnum;
+import cn.com.pism.gfd.enums.OutputEnum;
 import cn.com.pism.gfd.exception.GoFastDfsException;
-import cn.com.pism.gfd.model.GoFastDfsResult;
-import cn.com.pism.gfd.model.Stat;
 import cn.com.pism.gfd.model.config.GoFastDfsConfig;
 import cn.com.pism.gfd.model.params.Reload;
+import cn.com.pism.gfd.model.params.Upload;
+import cn.com.pism.gfd.model.result.GoFastDfsResult;
+import cn.com.pism.gfd.model.result.StatResult;
+import cn.com.pism.gfd.model.result.UploadResult;
 import cn.com.pism.gfd.properties.GoFastDfsProperties;
 import cn.com.pism.gfd.util.ObjectToBeanUtil;
 import cn.hutool.http.HttpUtil;
@@ -95,12 +98,27 @@ public class GoFastDfsUtil {
      * 文件统计信息
      * </p>
      *
-     * @return {@link List<Stat>} 统计信息列表
+     * @return {@link List< StatResult >} 统计信息列表
      * @author PerccyKing
      * @date 2021/04/04 下午 04:33
      */
-    public List<Stat> stat() {
-        return postToArr(STAT_URL, null, Stat.class);
+    public List<StatResult> stat() {
+        return postToArr(STAT_URL, null, StatResult.class);
+    }
+
+    /**
+     * <p>
+     * 
+     * </p>
+     * 
+     * @param upload :
+     * @return {@link UploadResult}        
+     * @author PerccyKing
+     * @date 2021/04/04 下午 10:43
+     */
+    public UploadResult upload(Upload upload) {
+        upload.setOutput(OutputEnum.JSON2);
+        return post(UPLOAD_URL, upload, UploadResult.class);
     }
 
 
@@ -183,12 +201,11 @@ public class GoFastDfsUtil {
      * @date 2021/04/04 下午 04:31
      */
     private String getPostResult(String url, Object params) {
-        Map<String, Object> map = new HashMap<>(0);
+        JSONObject jsonObject = null;
         if (params != null) {
-            JSONObject jsonObject = ObjectToBeanUtil.parse(params, JSONObject.class);
-            jsonObject.forEach(map::put);
+            jsonObject = ObjectToBeanUtil.parse(params, JSONObject.class);
         }
-        String res = HttpUtil.post(getBaseUrl() + url, map);
+        String res = HttpUtil.post(getBaseUrl() + url, jsonObject);
         //判断返回格式是否为json
         if (!isJson(res)) {
             throw new GoFastDfsException(res);
