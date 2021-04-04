@@ -56,32 +56,50 @@ public class GoFastDfsUtil {
      * 配置管理API
      * </p>
      *
-     * @param action : set(修改参数),get获取参数,reload重新加载参数
-     * @param config : json参数　与 action=set配合完成参数设置
+     * @param action       : set(修改参数),get获取参数,reload重新加载参数
+     * @param reloadAction : json参数　与 action=set配合完成参数设置
      * @return {@link GoFastDfsConfig} 获取到的参数
      * @author PerccyKing
      * @date 2021/04/03 下午 10:12
      */
-    public GoFastDfsConfig reload(ActionEnum action, GoFastDfsConfig config) {
+    public GoFastDfsConfig reload(ActionEnum action, ReloadAction reloadAction) {
         Reload reload = new Reload();
-        GoFastDfsConfig getConfig = reload(ActionEnum.GET, null);
+        GoFastDfsConfig getConfig = null;
+        if (action != ActionEnum.RELOAD) {
+            getConfig = post(RELOAD_URL, reload.setAction(ActionEnum.GET), GoFastDfsConfig.class);
+        }
         switch (action) {
             case GET:
-                reload.setAction(ActionEnum.GET);
-                return post(RELOAD_URL, reload, GoFastDfsConfig.class);
-            case SET:
-                //获取到config。基于config设置参数
-                reload.setAction(ActionEnum.SET).setCfg(config);
-                post(RELOAD_URL, reload, GoFastDfsConfig.class);
                 return getConfig;
+            case SET:
+                reloadAction.setConfig(getConfig);
+                reload.setAction(ActionEnum.SET).setCfg(getConfig);
+                post(RELOAD_URL, reload, GoFastDfsConfig.class);
+                break;
             case RELOAD:
                 reload.setAction(ActionEnum.RELOAD);
                 post(RELOAD_URL, reload, GoFastDfsConfig.class);
-                return getConfig;
+                break;
             default:
                 break;
         }
-        return post(RELOAD_URL, reload, GoFastDfsConfig.class);
+        //重新获取配置
+        getConfig = post(RELOAD_URL, reload.setAction(ActionEnum.GET), GoFastDfsConfig.class);
+        return getConfig;
+    }
+
+    @FunctionalInterface
+    public interface ReloadAction {
+        /**
+         * <p>
+         * 基于原有的配置文件更新配置
+         * </p>
+         *
+         * @param config : 系统内已经生效的配置文件
+         * @author PerccyKing
+         * @date 2021/04/04 下午 03:12
+         */
+        void setConfig(GoFastDfsConfig config);
     }
 
     /**
