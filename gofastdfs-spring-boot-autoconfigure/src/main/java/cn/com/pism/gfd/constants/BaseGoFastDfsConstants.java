@@ -41,6 +41,21 @@ public abstract class BaseGoFastDfsConstants {
      */
     public static final String LIST_DIR_URL = "list_dir";
 
+    /**
+     * 修复统计信息
+     */
+    public static final String REPAIR_STAT_URL = "repair_stat";
+
+    /**
+     * 同步失败修复
+     */
+    public static final String REPAIR_URL = "repair";
+
+    /**
+     * 从文件目录中修复元数据（性能较差）
+     */
+    public static final String REPAIR_FILE_INFO_URL = "repair_fileinfo";
+
     public static final String SLASH = "/";
 
     public static final String HTTP = "http://";

@@ -203,6 +203,50 @@ public class GoFastDfsUtil {
         return postToArr(LIST_DIR_URL, map, ListDirResult.class);
     }
 
+    /**
+     * <p>
+     * 修复统计信息
+     * </p>
+     *
+     * @param date : 要修复的日期，格式如：20190725
+     * @author PerccyKing
+     * @date 2021/04/05 下午 05:13
+     */
+    public void repairStat(String date) {
+        Map<String, Object> map = new HashMap<>(0);
+        map.put("date", date);
+        post(getBaseUrl() + REPAIR_STAT_URL, map);
+    }
+
+    /**
+     * <p>
+     * 同步失败修复
+     * </p>
+     *
+     * @param force : 是否强行修复
+     * @author PerccyKing
+     * @date 2021/04/05 下午 05:15
+     */
+    public void repair(boolean force) {
+        Map<String, Object> map = new HashMap<>(0);
+        map.put("force", force ? 1 : 0);
+        post(getBaseUrl() + REPAIR_URL, map);
+    }
+
+    /**
+     * <p>
+     * 从文件目录中修复元数据（性能较差）
+     * 需要开启搬迁功能，修改cfg.json配置文件中的 enable_migrate 设为true
+     * </p>
+     *
+     * @author PerccyKing
+     * @date 2021/04/05 下午 05:17
+     */
+    public void repairFileInfo() {
+        reload(ActionEnum.SET, (config) -> config.setEnableMigrate(Boolean.TRUE));
+        post(getBaseUrl() + REPAIR_FILE_INFO_URL, null);
+    }
+
 
     @FunctionalInterface
     public interface ReloadAction {
