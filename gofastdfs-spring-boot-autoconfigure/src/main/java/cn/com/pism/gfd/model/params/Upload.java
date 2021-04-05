@@ -1,14 +1,13 @@
 package cn.com.pism.gfd.model.params;
 
-import cn.com.pism.gfd.enums.OutputEnum;
-import cn.com.pism.gfd.util.serializer.StringToLowerSerializer;
-import cn.hutool.core.io.resource.InputStreamResource;
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+
+import java.io.File;
 
 /**
  * 文件上传参数
@@ -29,7 +28,7 @@ public class Upload {
      * 文件流 会将
      */
     @JSONField(name = "file")
-    private InputStreamResource file;
+    private File file;
 
     /**
      * 场景
@@ -42,12 +41,6 @@ public class Upload {
      */
     @JSONField(name = "filename")
     private String filename;
-
-    /**
-     * 输出
-     */
-    @JSONField(name = "output", serializeUsing = StringToLowerSerializer.class)
-    private OutputEnum output;
 
     /**
      * 自定义路径

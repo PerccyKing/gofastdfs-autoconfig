@@ -1,7 +1,6 @@
 package cn.com.pism.gfd;
 
 import cn.com.pism.gfd.enums.ActionEnum;
-import cn.com.pism.gfd.enums.OutputEnum;
 import cn.com.pism.gfd.exception.GoFastDfsException;
 import cn.com.pism.gfd.model.config.GoFastDfsConfig;
 import cn.com.pism.gfd.model.params.Reload;
@@ -11,6 +10,7 @@ import cn.com.pism.gfd.model.result.StatResult;
 import cn.com.pism.gfd.model.result.UploadResult;
 import cn.com.pism.gfd.properties.GoFastDfsProperties;
 import cn.com.pism.gfd.util.ObjectToBeanUtil;
+import cn.hutool.core.io.resource.InputStreamResource;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -20,6 +20,9 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -108,17 +111,16 @@ public class GoFastDfsUtil {
 
     /**
      * <p>
-     * 
+     * 文件上传
      * </p>
-     * 
-     * @param upload :
-     * @return {@link UploadResult}        
+     *
+     * @param upload : 文件上传配置
+     * @return {@link UploadResult}
      * @author PerccyKing
-     * @date 2021/04/04 下午 10:43
+     * @date 2021/04/04 下午 10:45
      */
     public UploadResult upload(Upload upload) {
-        upload.setOutput(OutputEnum.JSON2);
-        return post(UPLOAD_URL, upload, UploadResult.class);
+        return postUpload(upload);
     }
 
 
@@ -150,6 +152,60 @@ public class GoFastDfsUtil {
      */
     public <T> T post(String url, Object params, Class<T> clazz) {
         String res = getPostResult(url, params);
+        return parseResToObj(clazz, res);
+    }
+
+    public UploadResult postUpload(Upload upload) {
+        try {
+            Map<String, Object> params = new HashMap<>(0);
+            File file = upload.getFile();
+            if (file != null) {
+                InputStreamResource isr = new InputStreamResource(new FileInputStream(file),
+                        file.getName());
+
+                params.put("file", isr);
+            }
+            String scene = upload.getScene();
+            if (StringUtils.isNotBlank(scene)) {
+                params.put("scene", scene);
+            }
+            String filename = upload.getFilename();
+            if (StringUtils.isNotBlank(filename)) {
+                params.put("filename", filename);
+            }
+            params.put("output", "json2");
+            String path = upload.getPath();
+            if (StringUtils.isNotBlank(path)) {
+                params.put("path", path);
+            }
+            String code = upload.getCode();
+            if (StringUtils.isNotBlank(code)) {
+                params.put("code", code);
+            }
+            String authToken = upload.getAuthToken();
+            if (StringUtils.isNotBlank(authToken)) {
+                params.put("auth_token", authToken);
+            }
+            String res = post(getBaseUrl() + UPLOAD_URL, params);
+            return parseResToObj(UploadResult.class, res);
+        } catch (FileNotFoundException e) {
+            log.error(e.getMessage());
+        }
+        return new UploadResult();
+    }
+
+    /**
+     * <p>
+     * 将结果字符串转换为对象
+     * </p>
+     *
+     * @param clazz : clazz
+     * @param res   : 结果字符串
+     * @return {@link T}
+     * @author PerccyKing
+     * @date 2021/04/05 下午 02:03
+     */
+    private <T> T parseResToObj(Class<T> clazz, String res) {
         GoFastDfsResult<Object> result = JSON.parseObject(res, new TypeReference<GoFastDfsResult<Object>>() {
         });
         String status = result.getStatus();
@@ -201,11 +257,8 @@ public class GoFastDfsUtil {
      * @date 2021/04/04 下午 04:31
      */
     private String getPostResult(String url, Object params) {
-        JSONObject jsonObject = null;
-        if (params != null) {
-            jsonObject = ObjectToBeanUtil.parse(params, JSONObject.class);
-        }
-        String res = HttpUtil.post(getBaseUrl() + url, jsonObject);
+        JSONObject map = ObjectToBeanUtil.parse(params, JSONObject.class);
+        String res = post(getBaseUrl() + url, map);
         //判断返回格式是否为json
         if (!isJson(res)) {
             throw new GoFastDfsException(res);
@@ -213,7 +266,36 @@ public class GoFastDfsUtil {
         return res;
     }
 
+    /**
+     * <p>
+     * 发送post请求
+     * </p>
+     *
+     * @param url    : 请求路径
+     * @param params : 请求参数
+     * @return {@link String} 请求相应
+     * @author PerccyKing
+     * @date 2021/04/05 下午 04:17
+     */
+    public String post(String url, Map<String, Object> params) {
+        String res = HttpUtil.post(url, params);
+        if (!isJson(res)) {
+            throw new GoFastDfsException(res);
+        }
+        return res;
+    }
 
+
+    /**
+     * <p>
+     * 判断字符串是否为json
+     * </p>
+     *
+     * @param s : 字符串
+     * @return {@link Boolean}
+     * @author PerccyKing
+     * @date 2021/04/04 下午 11:15
+     */
     public Boolean isJson(String s) {
         try {
             Object parse = JSON.parse(s);

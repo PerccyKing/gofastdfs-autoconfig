@@ -178,7 +178,7 @@ public class GoFastDfsConfig {
      * "下载域名": "用于外网下载文件的域名,不包含http://",
      */
     @JSONField(name = "download_domain")
-    private Long downloadDomain;
+    private String downloadDomain;
 
     /**
      * "场景列表":
