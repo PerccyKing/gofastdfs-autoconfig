@@ -208,6 +208,37 @@ public class GoFastDfsUtil {
         return new UploadResult();
     }
 
+
+    /**
+     * <p>
+     * 删除文件
+     * </p>
+     *
+     * @param md5 :文件的摘要（md5|sha1） 视配置定
+     * @author PerccyKing
+     * @date 2021/04/05 下午 04:42
+     */
+    public void deleteByMd5(String md5) {
+        Map<String, Object> map = new HashMap<>(0);
+        map.put("md5", md5);
+        post(getBaseUrl() + DELETE_URL, map);
+    }
+
+    /**
+     * <p>
+     * 删除文件
+     * </p>
+     *
+     * @param path :文件路径
+     * @author PerccyKing
+     * @date 2021/04/05 下午 04:42
+     */
+    public void deleteByPath(String path) {
+        Map<String, Object> map = new HashMap<>(0);
+        map.put("path", path);
+        post(getBaseUrl() + DELETE_URL, map);
+    }
+
     /**
      * <p>
      * 将结果字符串转换为对象
