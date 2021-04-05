@@ -5,6 +5,7 @@ import cn.com.pism.gfd.exception.GoFastDfsException;
 import cn.com.pism.gfd.model.config.GoFastDfsConfig;
 import cn.com.pism.gfd.model.params.Reload;
 import cn.com.pism.gfd.model.params.Upload;
+import cn.com.pism.gfd.model.result.GetFileInfoResult;
 import cn.com.pism.gfd.model.result.GoFastDfsResult;
 import cn.com.pism.gfd.model.result.StatResult;
 import cn.com.pism.gfd.model.result.UploadResult;
@@ -30,6 +31,8 @@ import java.util.Map;
 import static cn.com.pism.gfd.constants.BaseGoFastDfsConstants.*;
 
 /**
+ * 源文档<a href='https://sjqzhang.gitee.io/go-fastdfs/api.html'>https://sjqzhang.gitee.io/go-fastdfs/api.html</a>
+ *
  * @author PerccyKing
  * @version 0.0.1
  * @date 2021/03/28 下午 06:07
@@ -124,6 +127,72 @@ public class GoFastDfsUtil {
     }
 
 
+    /**
+     * <p>
+     * 删除文件
+     * </p>
+     *
+     * @param md5 :文件的摘要（md5|sha1） 视配置定
+     * @author PerccyKing
+     * @date 2021/04/05 下午 04:42
+     */
+    public void deleteByMd5(String md5) {
+        Map<String, Object> map = new HashMap<>(0);
+        map.put("md5", md5);
+        post(getBaseUrl() + DELETE_URL, map);
+    }
+
+    /**
+     * <p>
+     * 删除文件
+     * </p>
+     *
+     * @param path :文件路径
+     * @author PerccyKing
+     * @date 2021/04/05 下午 04:42
+     */
+    public void deleteByPath(String path) {
+        Map<String, Object> map = new HashMap<>(0);
+        map.put("path", path);
+        post(getBaseUrl() + DELETE_URL, map);
+    }
+
+
+    /**
+     * <p>
+     * 根据文件MD5获取文件信息
+     * </p>
+     *
+     * @param md5 : 文件的摘要（md5|sha1） 视配置定
+     * @return {@link GetFileInfoResult} 文件信息
+     * @author PerccyKing
+     * @date 2021/04/05 下午 04:54
+     */
+    public GetFileInfoResult getFileInfoByMd5(String md5) {
+        Map<String, Object> map = new HashMap<>(0);
+        map.put("md5", md5);
+        String res = post(getBaseUrl() + GET_FILE_INFO_URL, map);
+        return parseResToObj(GetFileInfoResult.class, res);
+    }
+
+    /**
+     * <p>
+     * 根据文件path获取文件信息
+     * </p>
+     *
+     * @param path : 文件路径
+     * @return {@link GetFileInfoResult} 文件信息
+     * @author PerccyKing
+     * @date 2021/04/05 下午 04:57
+     */
+    public GetFileInfoResult getFileInfoByPath(String path) {
+        Map<String, Object> map = new HashMap<>(0);
+        map.put("path", path);
+        String res = post(getBaseUrl() + GET_FILE_INFO_URL, map);
+        return parseResToObj(GetFileInfoResult.class, res);
+    }
+
+
     @FunctionalInterface
     public interface ReloadAction {
         /**
@@ -206,37 +275,6 @@ public class GoFastDfsUtil {
             log.error(e.getMessage());
         }
         return new UploadResult();
-    }
-
-
-    /**
-     * <p>
-     * 删除文件
-     * </p>
-     *
-     * @param md5 :文件的摘要（md5|sha1） 视配置定
-     * @author PerccyKing
-     * @date 2021/04/05 下午 04:42
-     */
-    public void deleteByMd5(String md5) {
-        Map<String, Object> map = new HashMap<>(0);
-        map.put("md5", md5);
-        post(getBaseUrl() + DELETE_URL, map);
-    }
-
-    /**
-     * <p>
-     * 删除文件
-     * </p>
-     *
-     * @param path :文件路径
-     * @author PerccyKing
-     * @date 2021/04/05 下午 04:42
-     */
-    public void deleteByPath(String path) {
-        Map<String, Object> map = new HashMap<>(0);
-        map.put("path", path);
-        post(getBaseUrl() + DELETE_URL, map);
     }
 
     /**
