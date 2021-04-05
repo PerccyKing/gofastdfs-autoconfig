@@ -36,6 +36,11 @@ public abstract class BaseGoFastDfsConstants {
      */
     public static final String GET_FILE_INFO_URL = "get_file_info";
 
+    /**
+     * 文件列表
+     */
+    public static final String LIST_DIR_URL = "list_dir";
+
     public static final String SLASH = "/";
 
     public static final String HTTP = "http://";

@@ -5,10 +5,7 @@ import cn.com.pism.gfd.exception.GoFastDfsException;
 import cn.com.pism.gfd.model.config.GoFastDfsConfig;
 import cn.com.pism.gfd.model.params.Reload;
 import cn.com.pism.gfd.model.params.Upload;
-import cn.com.pism.gfd.model.result.GetFileInfoResult;
-import cn.com.pism.gfd.model.result.GoFastDfsResult;
-import cn.com.pism.gfd.model.result.StatResult;
-import cn.com.pism.gfd.model.result.UploadResult;
+import cn.com.pism.gfd.model.result.*;
 import cn.com.pism.gfd.properties.GoFastDfsProperties;
 import cn.com.pism.gfd.util.ObjectToBeanUtil;
 import cn.hutool.core.io.resource.InputStreamResource;
@@ -171,8 +168,7 @@ public class GoFastDfsUtil {
     public GetFileInfoResult getFileInfoByMd5(String md5) {
         Map<String, Object> map = new HashMap<>(0);
         map.put("md5", md5);
-        String res = post(getBaseUrl() + GET_FILE_INFO_URL, map);
-        return parseResToObj(GetFileInfoResult.class, res);
+        return post(GET_FILE_INFO_URL, map, GetFileInfoResult.class);
     }
 
     /**
@@ -188,8 +184,23 @@ public class GoFastDfsUtil {
     public GetFileInfoResult getFileInfoByPath(String path) {
         Map<String, Object> map = new HashMap<>(0);
         map.put("path", path);
-        String res = post(getBaseUrl() + GET_FILE_INFO_URL, map);
-        return parseResToObj(GetFileInfoResult.class, res);
+        return post(GET_FILE_INFO_URL, map, GetFileInfoResult.class);
+    }
+
+    /**
+     * <p>
+     * 查看文件列表
+     * </p>
+     *
+     * @param dir : 要查看文件列表的目录名
+     * @return {@link List<ListDirResult>} 文件列表
+     * @author PerccyKing
+     * @date 2021/04/05 下午 05:06
+     */
+    public List<ListDirResult> listDirResult(String dir) {
+        Map<String, Object> map = new HashMap<>(0);
+        map.put("dir", dir);
+        return postToArr(LIST_DIR_URL, map, ListDirResult.class);
     }
 
 
