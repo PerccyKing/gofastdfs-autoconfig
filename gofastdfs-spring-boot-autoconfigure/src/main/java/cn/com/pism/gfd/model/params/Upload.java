@@ -59,4 +59,10 @@ public class Upload {
      */
     @JSONField(name = "auth_token")
     private String authToken;
+
+    /**
+     * 文件秒传
+     */
+    @JSONField(name = "md5")
+    private String md5;
 }

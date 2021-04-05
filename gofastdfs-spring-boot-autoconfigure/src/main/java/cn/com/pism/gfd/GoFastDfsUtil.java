@@ -155,6 +155,16 @@ public class GoFastDfsUtil {
         return parseResToObj(clazz, res);
     }
 
+    /**
+     * <p>
+     * 上传文件
+     * </p>
+     *
+     * @param upload : 文件上传配置
+     * @return {@link UploadResult} 上传结果
+     * @author PerccyKing
+     * @date 2021/04/05 下午 04:30
+     */
     public UploadResult postUpload(Upload upload) {
         try {
             Map<String, Object> params = new HashMap<>(0);
@@ -185,6 +195,10 @@ public class GoFastDfsUtil {
             String authToken = upload.getAuthToken();
             if (StringUtils.isNotBlank(authToken)) {
                 params.put("auth_token", authToken);
+            }
+            String md5 = upload.getMd5();
+            if (StringUtils.isNotBlank(md5)) {
+                params.put("md5", md5);
             }
             String res = post(getBaseUrl() + UPLOAD_URL, params);
             return parseResToObj(UploadResult.class, res);
