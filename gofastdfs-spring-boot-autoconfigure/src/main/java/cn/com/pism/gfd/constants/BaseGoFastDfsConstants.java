@@ -25,6 +25,10 @@ public abstract class BaseGoFastDfsConstants {
      * 文件上传
      */
     public static final String UPLOAD_URL = "upload";
+
+    /**
+     * 文件删除
+     */
     public static final String DELETE_URL = "delete";
 
     public static final String SLASH = "/";
